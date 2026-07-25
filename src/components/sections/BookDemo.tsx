@@ -52,7 +52,7 @@ export function BookDemo() {
     return (
       <section id="book-demo" className="bg-brand-950 py-24">
         <div className="mx-auto max-w-lg px-5 text-center sm:px-8">
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-teal-500/15 text-2xl text-teal-400">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-teal-500/15 text-2xl text-teal-500">
             ✓
           </div>
           <p className="balance text-xl font-semibold text-white">{b.success}</p>

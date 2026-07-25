@@ -6,7 +6,7 @@ See `IDENTITY.md` for the brand palette/type/motion rationale.
 
 ## Stack
 
-- Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
+- Next.js 15 (App Router), React 18, TypeScript, Tailwind CSS
 - Self-hosted fonts via `next/font/google` (IBM Plex Sans Arabic + IBM Plex Sans) — fetched once at build time and served from the app's own origin, never from Google at runtime
 - Resend for the book-a-demo lead email
 - Zod for server-side form validation
@@ -51,9 +51,36 @@ npm run lighthouse      # Lighthouse (mobile + desktop) -> lighthouse-report.jso
 
 `screenshots` and `lighthouse` both target `BASE_URL` (default `http://localhost:3210`) — run `npm run build && npm run start -- -p 3210` first, in another terminal.
 
+## Security
+
+A pass was done specifically to get this production-ready. What's in place:
+
+- **No secrets in the repo or the client bundle.** `.env`/`.env.local` are gitignored; only `.env.example` (placeholder values) is committed. `RESEND_API_KEY`/`LEAD_EMAIL`/`RESEND_FROM_EMAIL` are read exclusively in `src/app/api/lead/route.ts`, a server-only route handler — they never reach client-side JS. `scripts/check-no-lead-email-leak.mjs` runs on every build and greps the compiled `.next/` output for the literal env values, failing the build if either ever leaks in.
+- **Lead form abuse protection:** Zod validation on every field, a hidden honeypot (`src/lib/leadTypes.ts` → `HONEYPOT_FIELD`) that returns a fake success to bots instead of a tell-tale validation error, and an in-memory per-IP rate limit (5 requests / 10 minutes, `src/lib/rateLimit.ts`). All three were exercised directly against the built server during this pass (invalid payload → 400, honeypot filled → fake 200 with no email sent, 6th rapid request from one IP → 429) and behaved correctly. The rate limiter is in-memory/per-instance — correct call for V1 traffic on a single Vercel function; swap for Upstash/Redis if volume or targeted abuse ever demands cross-instance limits.
+- **HTTP security headers** (`next.config.mjs`): `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` (site can't be framed/clickjacked), `Referrer-Policy: strict-origin-when-cross-origin`, a locked-down `Permissions-Policy` (no camera/mic/geolocation — this page needs none of them), and `Strict-Transport-Security` (meaningful once served over HTTPS, which Vercel provides automatically).
+- **No CORS headers on `/api/lead`**, which is deliberate: without them, browsers block cross-origin JS from calling the endpoint at all (the `Content-Type: application/json` body makes it a non-"simple" request, so it requires a preflight that we never approve). Direct server-to-server calls aren't stopped by CORS (nothing is, that's not what CORS is for) — the rate limiter + honeypot + validation are the actual defense there, and that's an intentional, standard split of responsibilities.
+- **Dependency audit:** upgraded off Next.js 14.2.35 (no further stable 14.x patches are being cut) to the latest stable **Next.js 15.5.22**, which resolved a long list of Next-specific high-severity advisories (Server Actions/Middleware/RSC-cache DoS and SSRF issues — none of which this app's surface actually used, since there's no Middleware, no Server Actions, no i18n routing config here, but better not to carry them regardless). Also bumped `resend` (4.0.1 → 6.18.0) and the root `postcss` devDependency, which resolved every fixable advisory in `npm audit` bar two: `next/node_modules/{postcss,sharp}` — Next's **own internal, vendored** copies (used for Next's own build-time CSS processing and the `next/image` optimizer), not something this repo's `package.json` can pin around. Practical exploitability for this app is effectively nil: the vendored postcss only ever processes this repo's own Tailwind output at build time (never attacker-supplied CSS), and the vendored sharp only ever processes the handful of first-party images in `public/images/` (never a user upload or an attacker-controlled URL — this site never accepts either). Re-run `npm audit` occasionally and take a matching Next.js patch release when one ships.
+- **Type/lint clean, no `any`-laden escape hatches.** `npm run typecheck` and `npm run lint` are both clean; nothing here silences a real error.
+
 ## Deploying
 
-Static-first and Vercel-ready as-is: `vercel deploy` (or connect the repo in the Vercel dashboard), set `RESEND_API_KEY` / `RESEND_FROM_EMAIL` / `LEAD_EMAIL` as project environment variables, done. This repo has not been deployed from this session — no Vercel account/credentials were available here; whoever holds the Zamili Vercel account should do the first deploy and drop the preview URL into `zamili-board/output/ZAM-1102-landing.md`.
+Static-first and built for exactly this: push to `main`/`develop`, connect the repo on [vercel.com](https://vercel.com), done. Concretely:
+
+1. **Push this repo to GitHub** (already done — `abdullahsn10/zamili-landing`). Vercel deploys straight from a GitHub repo; no separate upload step.
+2. **Create a Vercel account** (or use an existing one) at vercel.com, sign in with GitHub.
+3. **"Add New… → Project"**, pick `zamili-landing` from the repo list. Vercel auto-detects Next.js — framework preset, build command (`next build`), and output are all filled in automatically. No configuration needed.
+4. **Environment variables** — before the first deploy (or right after, then redeploy), add these three in the Vercel project's **Settings → Environment Variables** (not in a committed file):
+   - `RESEND_API_KEY` — from your Resend account (resend.com → API Keys). Paste it directly into Vercel's dashboard, not into a chat, a doc, or a commit — Vercel encrypts it and it's the only place it needs to live besides your own password manager.
+   - `LEAD_EMAIL` — the inbox that should receive book-a-demo leads.
+   - `RESEND_FROM_EMAIL` — a sender identity on a domain you've verified in Resend (Resend → Domains → Add Domain, then add the DNS records it gives you). Until a domain is verified, omit this and the app falls back to Resend's shared sandbox sender (fine for testing, not for real outbound deliverability/branding).
+5. **Deploy.** Vercel gives you a free `*.vercel.app` preview URL immediately — this is a fully working, publicly reachable HTTPS URL, good enough to share right away while a custom domain is still being set up.
+6. **Custom domain** (e.g. `zamili.com` or `www.zamili.com`):
+   - If Zamili doesn't already own a domain: buy one through any registrar (Namecheap, Cloudflare Registrar, Google Domains successor Squarespace Domains, or directly through Vercel's own domain registration in the project's **Domains** tab — all comparable, pick whichever you already have billing set up with). This is a real purchase — do it from your own account, not through me.
+   - In the Vercel project → **Settings → Domains**, add the domain. Vercel shows the exact DNS records to add (usually an `A`/`ALIAS` record for the apex domain and a `CNAME` for `www`) — add those at your registrar (or point the domain's nameservers at Vercel if you'd rather manage DNS there). Propagation is usually minutes, sometimes a few hours.
+   - Vercel issues and renews the TLS certificate automatically once DNS resolves — no manual certificate work.
+7. **Every subsequent `git push` to the connected branch redeploys automatically**, and every PR gets its own preview URL for free — useful for the founder-review workflow this repo already follows.
+
+This repo has not been deployed from this session — no Vercel account/credentials were available here. Whoever holds (or creates) the Zamili Vercel account should do steps 2–6 and drop the resulting URL (and the domain, once connected) into `zamili-board/output/ZAM-1102-landing.md`.
 
 ## Demo images
 
@@ -87,6 +114,6 @@ Contrast note: the initial `ink-3` tertiary-text color (`#82838F`) measured ~3.7
 
 ## What's not done here
 
-- **No deployment.** No Vercel account/credentials were available in this session. Someone with access needs to run the first deploy and record the preview URL.
-- **No real end-to-end email test.** `RESEND_API_KEY` / `LEAD_EMAIL` need real values (from whoever owns the Zamili Resend account) to send an actual test lead and confirm delivery.
+- **No deployment.** No Vercel account/credentials were available in this session. Someone with access needs to run the first deploy and record the preview URL — see "Deploying" above for the exact steps.
+- **No real end-to-end email test.** The route's request handling (validation, honeypot, rate limiting, the "misconfigured" failure path) was verified directly against the built server and behaves correctly — but sending an actual email needs a real `RESEND_API_KEY` and `LEAD_EMAIL`, which weren't available in this session. Once those are set (locally in `.env.local`, or as real Vercel project env vars), submit the form once for real and confirm the email arrives.
 - **The mobile Lighthouse performance number above is a local measurement**, not a deployed one — see the caveat above.

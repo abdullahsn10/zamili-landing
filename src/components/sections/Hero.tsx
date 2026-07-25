@@ -36,7 +36,7 @@ export function Hero() {
           <p className="balance mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
             {h.sub}
           </p>
-          <p className="balance mt-4 max-w-xl border-s-2 border-ember-500/60 ps-3 text-sm leading-relaxed text-ember-200 sm:text-base">
+          <p className="balance mt-4 max-w-xl border-s-2 border-ember-500/60 ps-3 text-sm leading-relaxed text-ember-400 sm:text-base">
             {renderWithZamiliName(h.growthLine)}
           </p>
 
