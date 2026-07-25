@@ -31,10 +31,26 @@ async function revealAll(page) {
   }
 }
 
-async function capture(page, device, locale) {
-  // Hero — mid-animation.
+async function waitForHeroPanel(page, badgeText, timeoutMs = 19000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const landed = await page.evaluate((text) => {
+      const el = Array.from(document.querySelectorAll("span")).find((s) =>
+        s.textContent?.includes(text)
+      );
+      const panel = el ? el.closest(".rounded-2xl") : null;
+      return !!panel && panel.className.includes("opacity-100");
+    }, badgeText);
+    if (landed) return true;
+    await page.waitForTimeout(500);
+  }
+  return false;
+}
+
+async function capture(page, device, locale, panelBadgeText) {
+  // Hero — wait for the phone conversation to finish and the admin panel to land.
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(1400);
+  await waitForHeroPanel(page, panelBadgeText);
   await page.screenshot({ path: `${OUT_DIR}/${device}-${locale}-hero.png` });
   console.log(`saved ${OUT_DIR}/${device}-${locale}-hero.png`);
 
@@ -61,12 +77,12 @@ async function run() {
 
     await page.goto(BASE_URL, { waitUntil: "networkidle" });
     await page.waitForTimeout(400);
-    await capture(page, device, "ar");
+    await capture(page, device, "ar", "طلب جديد");
 
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.getByRole("button", { name: "English" }).click();
     await page.waitForTimeout(400);
-    await capture(page, device, "en");
+    await capture(page, device, "en", "New order");
 
     await context.close();
   }

@@ -78,6 +78,17 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0) rotate(var(--tilt, 0deg))" },
           "50%": { transform: "translateY(-8px) rotate(var(--tilt, 0deg))" },
         },
+        "travel-down": {
+          "0%": { top: "0%", opacity: "0" },
+          "12%": { opacity: "1" },
+          "88%": { opacity: "1" },
+          "100%": { top: "100%", opacity: "0" },
+        },
+        "pop-in": {
+          "0%": { transform: "scale(0)", opacity: "0" },
+          "60%": { transform: "scale(1.15)", opacity: "1" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
@@ -86,6 +97,8 @@ const config: Config = {
         "drift-b": "drift-b 22s ease-in-out infinite",
         float: "float 5s ease-in-out infinite",
         "float-slow": "float-slow 7s ease-in-out infinite",
+        "travel-down": "travel-down 1.5s ease-in-out infinite",
+        "pop-in": "pop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both",
       },
     },
   },

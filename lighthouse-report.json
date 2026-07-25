@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-25T16:03:46.477Z",
+  "generatedAt": "2026-07-25T17:33:41.293Z",
   "url": "http://localhost:3210",
   "mobile": {
-    "performance": 73,
+    "performance": 66,
     "accessibility": 100,
     "best-practices": 100,
     "seo": 100
   },
   "desktop": {
-    "performance": 100,
+    "performance": 99,
     "accessibility": 100,
     "best-practices": 100,
     "seo": 100

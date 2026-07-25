@@ -57,9 +57,12 @@ Static-first and Vercel-ready as-is: `vercel deploy` (or connect the repo in the
 
 ## Demo images
 
-`public/images/pizza-veggie.jpg` and `public/images/shirts-rack.jpg` (used in the WhatsApp order demo and the Retail Pack sample conversation, resized/cropped with `sharp`) are both CC0/public-domain photos:
-- Pizza: ["Margherita PIzza"](https://commons.wikimedia.org/wiki/File:Margherita_PIzza_(Unsplash).jpg) via Wikimedia Commons, CC0.
-- Shirts: ["Shirts Hanging on Clothes Rack"](https://www.flickr.com/photos/132795455@N08/22062843021) by Image Catalog, via Openverse/Flickr, CC0. No attribution is legally required for either, credited here anyway.
+`public/images/*.jpg` (used in the WhatsApp order demo and the Retail Pack's sample conversation — one agent-sent photo, one customer-sent photo, and a 2-photo gallery reply — resized/cropped with `sharp`) are all CC0/public-domain photos, sourced via Openverse:
+- `pizza-veggie.jpg`: ["Pizza Margherita San Marzano tomatoes"](https://www.rawpixel.com/image/448258/authentic-italian-pizza-pieces) by Jakub Kapusnak, CC0.
+- `shirts-rack.jpg`: ["Blank t-shirts hanging wooden hangers"](https://www.rawpixel.com/image/11524162/blank-t-shirts-hanging-wooden-hangers), CC0.
+- `shirts-folded.jpg`: ["Stack of folded t-shirts"](https://www.rawpixel.com/image/11515802/stack-folded-t-shirts), CC0.
+
+No attribution is legally required for any of these; credited here anyway.
 
 ## Screenshots
 
@@ -72,11 +75,13 @@ Measured locally against `next start` (no CDN/edge caching) on a loaded dev mach
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
 | Desktop | 98–100 across repeated local runs | 100 | 100 | 100 |
-| Mobile | 73–88 across repeated local runs (see caveat below) | 100 | 100 | 100 |
+| Mobile | 59–88 across repeated local runs (see caveat below) | 100 | 100 | 100 |
 
 Full machine-readable output: `lighthouse-report.json` (regenerate with `npm run lighthouse`).
 
-**Caveat on the mobile performance number:** run locally 8+ times across two sessions, it landed anywhere from 73 to 88 — desktop stayed at 98–100 on the identical build every time. Lighthouse's mobile preset applies a 4x CPU slowdown on top of whatever the host machine is already doing, so on a dev machine running a browser, an editor, and other tooling simultaneously, that throttle amplifies ordinary host jitter into visible score swings; it is not a signal that the page's real-world mobile performance is unstable. LCP/FCP were the two metrics dragging the score below the ≥90 target locally (both ~2.5–3.3s here). **This should be re-measured against the deployed Vercel URL** once one exists — Vercel's edge network, HTTP/2, and proper cache headers reliably outperform an unthrottled-at-the-edge `next start` on localhost, and that number is the one to hold against the ≥90 target, not this one.
+**Caveat on the mobile performance number:** run locally 10+ times across several sessions (including after adding more demo photos and cards), it's landed anywhere from 59 to 88 — desktop stayed at 98–100 on the identical build every time. Lighthouse's mobile preset applies a 4x CPU slowdown on top of whatever the host machine is already doing, so on a dev machine running a browser, an editor, and other tooling simultaneously, that throttle amplifies ordinary host jitter into large score swings; it is not a signal that the page's real-world mobile performance is unstable — see the "known gotcha" below, where the same variance once turned out to be dozens of orphaned `node` processes from repeated background builds, not a real regression. LCP/FCP are the two metrics dragging the score below the ≥90 target locally. **This should be re-measured against the deployed Vercel URL** once one exists — Vercel's edge network, HTTP/2, and proper cache headers reliably outperform an unthrottled-at-the-edge `next start` on localhost, and that number is the one to hold against the ≥90 target, not this one.
+
+**Known gotcha — check for orphaned node processes before trusting a bad score.** Running `npm run build`/`npm run start` repeatedly in the same shell session (e.g. while iterating) can leave old server/build processes running in the background on Windows. A pile of these starves the CPU and single-handedly explains mobile scores in the 50s–60s, or even a demo animation that looks "stuck" (the phone conversation never advancing). Before treating a bad Lighthouse run or a frozen-looking animation as a real bug, run `tasklist //FI "IMAGENAME eq node.exe"` and kill anything you don't recognize (`taskkill //F //IM node.exe`, then restart just the one server you need) — this fixed both symptoms outright during this build.
 
 Contrast note: the initial `ink-3` tertiary-text color (`#82838F`) measured ~3.76:1 on white and failed WCAG AA (4.5:1) for normal-size text — caught by this same Lighthouse run. Darkened to `#6E6F7A` (4.97:1); accessibility now scores 100/100 on both presets. See `IDENTITY.md` §2.
 

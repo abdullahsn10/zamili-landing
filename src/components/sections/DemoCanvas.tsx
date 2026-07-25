@@ -5,22 +5,26 @@ import { useInView } from "@/lib/hooks";
 import { MeshBackground } from "@/components/background/MeshBackground";
 import { PhoneFrame } from "@/components/demo/PhoneFrame";
 import { BrowserFrame } from "@/components/demo/BrowserFrame";
+import { TelegramFrame } from "@/components/demo/TelegramFrame";
 import { TypingChat } from "@/components/demo/TypingChat";
 import { RecordsDemo } from "@/components/demo/RecordsDemo";
 import { OrderDemo } from "@/components/demo/OrderDemo";
+import { InsightsDemo } from "@/components/demo/InsightsDemo";
 import type { DemoCard } from "@/i18n/types";
 
 function CardShell({
   card,
   render,
+  spanFull,
 }: {
   card: DemoCard;
   render: (inView: boolean) => React.ReactNode;
+  spanFull?: boolean;
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
 
   return (
-    <div ref={ref} className="flex flex-col items-center">
+    <div ref={ref} className={`flex flex-col items-center ${spanFull ? "lg:col-span-2" : ""}`}>
       <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
         <span className="rounded-full bg-brand-500/15 px-3 py-1 text-xs font-medium text-brand-200">
           {card.chip}
@@ -108,6 +112,25 @@ export function DemoCanvas() {
               <BrowserFrame url="enroll.zamili.example">
                 <OrderDemo data={d.course} active={inView} />
               </BrowserFrame>
+            )}
+          />
+
+          <CardShell
+            card={d.insights}
+            render={(inView) => (
+              <BrowserFrame url="insights.zamili.example">
+                <InsightsDemo data={d.insights} active={inView} />
+              </BrowserFrame>
+            )}
+          />
+
+          <CardShell
+            card={d.voiceBooking}
+            spanFull
+            render={(inView) => (
+              <TelegramFrame headerTitle={d.voiceBooking.chip} headerSub="عبر Zamili">
+                <OrderDemo data={d.voiceBooking} active={inView} />
+              </TelegramFrame>
             )}
           />
         </div>

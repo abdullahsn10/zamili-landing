@@ -16,6 +16,7 @@ export function Trust() {
             {trust.eyebrow}
           </p>
           <h2 className="balance text-3xl font-bold text-ink sm:text-4xl">{trust.heading}</h2>
+          <p className="balance mt-4 text-base leading-relaxed text-ink-2">{trust.growthIntro}</p>
         </div>
 
         <div ref={ref} className="grid gap-5 sm:grid-cols-2">

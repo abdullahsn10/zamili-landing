@@ -18,6 +18,7 @@ export const en: Dictionary = {
     eyebrow: "Customer replies and order capture, fully automated",
     headline: "Got a problem eating up your time every day? Zamili solves it with AI.",
     sub: "Your customers ask the same questions every day, and it eats up your staff's time. Zamili replies instantly on WhatsApp and your website — using only your own information — and logs every order before you lose a customer.",
+    growthLine: "Want to grow your institution and speed up your work to the highest level? Zamili isn't just a fix — it raises your service quality every single day.",
     ctaPrimary: "Book a live demo",
     ctaSecondary: "Watch Zamili at work",
     statLabel1: "Available",
@@ -26,6 +27,11 @@ export const en: Dictionary = {
     statValue2: "4 channels",
     statLabel3: "From your data",
     statValue3: "100%",
+    panelBadge: "New order",
+    panelTitle: "Restaurant orders board",
+    panelItem: "1x medium veggie pizza",
+    panelOrderNo: "#482",
+    panelStatus: "Awaiting prep",
   },
   demoCanvas: {
     eyebrow: "See it, don't just read about it",
@@ -97,6 +103,7 @@ export const en: Dictionary = {
       title: "Add a product, and it's instantly ready to answer for",
       sub: "Log the size, color, and price once — Zamili quotes it back instantly.",
       productName: "Cotton shirt",
+      categoryLabel: "Men's shirts",
       addingLabel: "Adding a new product",
       variantsLabel: "Available sizes & colors",
       variants: [
@@ -104,6 +111,7 @@ export const en: Dictionary = {
         { size: "L", color: "Navy", price: "₪85" },
         { size: "XL", color: "Navy", price: "₪90" },
       ],
+      availabilityLabel: "In stock",
       question: "How much is the navy cotton shirt in size L?",
       answer: "85 shekels, and it's currently in stock in size L, navy.",
     },
@@ -154,6 +162,40 @@ export const en: Dictionary = {
       inboxTitle: "Enrollment board",
       inboxLine: "Evening yoga — new member",
       inboxStatus: "Awaiting first payment",
+    },
+    voiceBooking: {
+      id: "voice",
+      chip: "Clinic",
+      channel: "Telegram · voice message",
+      title: "Hears a voice message, understands it, and acts",
+      sub: "The customer sends voice instead of typing, and Zamili understands it and books the appointment on Telegram.",
+      steps: [
+        {
+          sender: "customer",
+          text: "I'd like to book with Dr. Waleed today at 5pm",
+          voice: true,
+          voiceDuration: "0:08",
+        },
+        { sender: "zamili", text: "Got it, booked you with Dr. Waleed today at 5:00pm. Shall I confirm it?" },
+        { sender: "customer", text: "Confirmed" },
+      ],
+      toast: "Appointment booked ✅",
+      inboxTitle: "Telegram appointments board",
+      inboxLine: "Dr. Waleed — today 5:00pm",
+      inboxStatus: "Awaiting clinic confirmation",
+    },
+    insights: {
+      id: "insights",
+      chip: "Any business",
+      channel: "Insights board",
+      title: "Your numbers, moment by moment",
+      sub: "Orders, fulfillment, and profit — all in front of the owner, without asking anyone.",
+      stats: [
+        { label: "Orders today", value: 47 },
+        { label: "Fulfilled", value: 39 },
+        { label: "Profit", value: 2840, prefix: "₪ " },
+      ],
+      chartLabel: "Orders, last 7 days",
     },
   },
   verticals: {
@@ -211,6 +253,18 @@ export const en: Dictionary = {
         outcome: "Menu, prices, and delivery orders — straight from WhatsApp.",
         channels: ["WhatsApp", "Telegram", "Your site", "API"],
         sample: [
+          { sender: "customer", text: "What's on the menu tonight?", typingMs: 1200 },
+          {
+            sender: "zamili",
+            text: "Here's tonight's menu:",
+            typingMs: 1600,
+            menu: [
+              { name: "Margherita pizza", price: "₪28" },
+              { name: "Veggie pizza", price: "₪32" },
+              { name: "Chicken pizza", price: "₪38" },
+              { name: "Cola", price: "₪5" },
+            ],
+          },
           { sender: "customer", text: "Do you deliver to Al-Bireh?", typingMs: 1200 },
           { sender: "zamili", text: "Yes, delivery to Al-Bireh takes about 45 minutes.", typingMs: 1600 },
         ],
@@ -230,6 +284,16 @@ export const en: Dictionary = {
             imageAlt: "Shirts hanging in different colors",
           },
           { sender: "zamili", text: "Yes, we carry that exact style in several colors. Which color and size would you like?", typingMs: 1700 },
+          { sender: "customer", text: "What colors do you have?", typingMs: 1000 },
+          {
+            sender: "zamili",
+            text: "Here are our most popular colors right now — all available in every size.",
+            typingMs: 1600,
+            images: [
+              { src: "/images/shirts-rack.jpg", alt: "Shirts in different colors on hangers" },
+              { src: "/images/shirts-folded.jpg", alt: "Folded shirts in different colors" },
+            ],
+          },
         ],
       },
       {
@@ -285,6 +349,8 @@ export const en: Dictionary = {
   trust: {
     eyebrow: "Trust comes first",
     heading: "Why institutions trust Zamili",
+    growthIntro:
+      "Want to grow your restaurant, clinic, or institution and speed up your work to the highest level? Zamili isn't just a time-saver — it's an investment that makes your service faster, more accurate, and available around the clock.",
     items: [
       {
         title: "Answers only from your own information",

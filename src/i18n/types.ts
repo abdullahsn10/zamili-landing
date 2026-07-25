@@ -8,6 +8,10 @@ export interface ChatMessage {
   /** optional photo attached to the message (path under /public) */
   image?: string;
   imageAlt?: string;
+  /** optional multi-photo gallery (e.g. "here are a few colors we have") */
+  images?: { src: string; alt: string }[];
+  /** optional structured menu/catalog list (item + price rows) */
+  menu?: { name: string; price: string }[];
 }
 
 export interface DemoCard {
@@ -29,19 +33,32 @@ export interface WidgetDemo extends DemoCard {
 
 export interface RecordsDemo extends DemoCard {
   productName: string;
+  categoryLabel: string;
   addingLabel: string;
   variantsLabel: string;
   variants: { size: string; color: string; price: string }[];
+  availabilityLabel: string;
   question: string;
   answer: string;
 }
 
 export interface OrderDemo extends DemoCard {
-  steps: { sender: "customer" | "zamili"; text: string }[];
+  steps: {
+    sender: "customer" | "zamili";
+    text: string;
+    /** render as a voice-note bubble (waveform + duration) instead of plain text; `text` becomes the shown transcript */
+    voice?: boolean;
+    voiceDuration?: string;
+  }[];
   toast: string;
   inboxTitle: string;
   inboxLine: string;
   inboxStatus: string;
+}
+
+export interface InsightsDemo extends DemoCard {
+  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
+  chartLabel: string;
 }
 
 export interface VerticalItem {
@@ -77,6 +94,7 @@ export interface Dictionary {
     eyebrow: string;
     headline: string;
     sub: string;
+    growthLine: string;
     ctaPrimary: string;
     ctaSecondary: string;
     statLabel1: string;
@@ -85,6 +103,11 @@ export interface Dictionary {
     statValue2: string;
     statLabel3: string;
     statValue3: string;
+    panelBadge: string;
+    panelTitle: string;
+    panelItem: string;
+    panelOrderNo: string;
+    panelStatus: string;
   };
   demoCanvas: {
     eyebrow: string;
@@ -97,6 +120,8 @@ export interface Dictionary {
     order: OrderDemo;
     appointment: OrderDemo;
     course: OrderDemo;
+    voiceBooking: OrderDemo;
+    insights: InsightsDemo;
   };
   verticals: {
     eyebrow: string;
@@ -117,6 +142,7 @@ export interface Dictionary {
   trust: {
     eyebrow: string;
     heading: string;
+    growthIntro: string;
     items: { title: string; body: string }[];
     technicalNote: string;
   };

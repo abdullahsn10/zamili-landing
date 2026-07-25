@@ -82,10 +82,23 @@ export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: b
           showProduct ? "opacity-100" : "opacity-0"
         }`}
       >
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink-3">
-          {data.addingLabel}
-        </p>
-        <p className="mb-2.5 text-sm font-semibold text-ink">{data.productName}</p>
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-ink-3">
+            {data.addingLabel}
+          </p>
+          <span className="rounded-full bg-paper-2 px-2 py-0.5 text-[10px] font-medium text-ink-2">
+            {data.categoryLabel}
+          </span>
+        </div>
+        <div className="mb-2.5 flex items-center justify-between">
+          <p className="text-sm font-semibold text-ink">{data.productName}</p>
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-teal-500">
+            {data.availabilityLabel}
+            <span className="relative inline-flex h-4 w-7 items-center rounded-full bg-teal-500">
+              <span className="absolute end-0.5 h-3 w-3 rounded-full bg-white shadow-sm" />
+            </span>
+          </span>
+        </div>
         <p className="mb-1.5 text-[11px] text-ink-3">{data.variantsLabel}</p>
         <div className="flex flex-wrap gap-1.5">
           {data.variants.slice(0, visibleVariants).map((v, i) => (

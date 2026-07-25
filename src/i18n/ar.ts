@@ -18,6 +18,7 @@ export const ar: Dictionary = {
     eyebrow: "الرد على الزباين وتسجيل الطلبات، مؤتمت بالكامل",
     headline: "عندك مشكلة بتاكل وقتك كل يوم؟ Zamili بيحلّها بالذكاء الاصطناعي.",
     sub: "زباينك بيسألوا نفس الأسئلة كل يوم، وبتضيّع وقت موظفينك. Zamili يرد عليهم فوراً على واتساب وموقعك — من معلوماتك الفعلية بس — ويسجل طلباتهم قبل ما تفوتك.",
+    growthLine: "وبدك تطوّر مؤسستك وتسرّع شغلك لأعلى مستوى؟ Zamili مش بس بيحل مشكلة — بيرفع مستوى خدمتك كل يوم.",
     ctaPrimary: "احجز عرضاً تجريبياً",
     ctaSecondary: "شاهد كيف بيشتغل Zamili",
     statLabel1: "متوفر",
@@ -26,6 +27,11 @@ export const ar: Dictionary = {
     statValue2: "٤ قنوات",
     statLabel3: "من معلوماتك",
     statValue3: "١٠٠٪",
+    panelBadge: "طلب جديد",
+    panelTitle: "لوحة طلبات المطعم",
+    panelItem: "بيتزا خضار وسط × ١",
+    panelOrderNo: "#٤٨٢",
+    panelStatus: "بانتظار التجهيز",
   },
   demoCanvas: {
     eyebrow: "بالعين، مش بالكلام",
@@ -97,6 +103,7 @@ export const ar: Dictionary = {
       title: "بتضيف منتج، وبيصير جاهز فوراً للرد",
       sub: "تسجل المقاس واللون والسعر مرة وحدة، وZamili يجاوب فيها لحظياً.",
       productName: "قميص قطن",
+      categoryLabel: "قمصان رجالي",
       addingLabel: "إضافة منتج جديد",
       variantsLabel: "المقاسات والألوان المتوفرة",
       variants: [
@@ -104,6 +111,7 @@ export const ar: Dictionary = {
         { size: "L", color: "كحلي", price: "٨٥ ₪" },
         { size: "XL", color: "كحلي", price: "٩٠ ₪" },
       ],
+      availabilityLabel: "متوفر بالمحل",
       question: "قميص القطن الكحلي مقاس L بكم؟",
       answer: "٨٥ شيكل، ومتوفر حالياً بمقاس L بلون كحلي.",
     },
@@ -154,6 +162,40 @@ export const ar: Dictionary = {
       inboxTitle: "لوحة التسجيل",
       inboxLine: "يوغا مسائي — عضو جديد",
       inboxStatus: "بانتظار الدفعة الأولى",
+    },
+    voiceBooking: {
+      id: "voice",
+      chip: "عيادة",
+      channel: "تيليجرام · رسالة صوتية",
+      title: "بيسمع رسالة صوتية، وبيفهمها، وبينفذ",
+      sub: "الزبون بيرسل صوت بدل ما يكتب، وZamili يفهمه ويحجز الموعد على تيليجرام.",
+      steps: [
+        {
+          sender: "customer",
+          text: "بدي أحجز عند دكتور وليد اليوم الساعة خمسة",
+          voice: true,
+          voiceDuration: "٠:٠٨",
+        },
+        { sender: "zamili", text: "تمام، حجزتلك عند دكتور وليد اليوم الساعة ٥:٠٠ المسا. أثبت الحجز؟" },
+        { sender: "customer", text: "أكد" },
+      ],
+      toast: "تم حجز الموعد ✅",
+      inboxTitle: "لوحة مواعيد تيليجرام",
+      inboxLine: "د. وليد — اليوم ٥:٠٠ المسا",
+      inboxStatus: "بانتظار تأكيد العيادة",
+    },
+    insights: {
+      id: "insights",
+      chip: "لكل الأنشطة",
+      channel: "لوحة الأرقام",
+      title: "أرقام شغلك، لحظة بلحظة",
+      sub: "طلبات، تجهيز، وأرباح — كل شي قدام صاحب العمل، بدون ما يسأل حدا.",
+      stats: [
+        { label: "طلبات اليوم", value: 47 },
+        { label: "تم تجهيزها", value: 39 },
+        { label: "الأرباح", value: 2840, prefix: "₪ " },
+      ],
+      chartLabel: "الطلبات آخر ٧ أيام",
     },
   },
   verticals: {
@@ -211,6 +253,18 @@ export const ar: Dictionary = {
         outcome: "قائمة، أسعار، وطلبات توصيل — من واتساب مباشرة.",
         channels: ["واتساب", "تيليجرام", "موقعك", "API"],
         sample: [
+          { sender: "customer", text: "شو عندكم بالمنيو الليلة؟", typingMs: 1200 },
+          {
+            sender: "zamili",
+            text: "هاي قائمة الليلة:",
+            typingMs: 1600,
+            menu: [
+              { name: "بيتزا مارغريتا", price: "٢٨ ₪" },
+              { name: "بيتزا خضار", price: "٣٢ ₪" },
+              { name: "بيتزا دجاج", price: "٣٨ ₪" },
+              { name: "كولا", price: "٥ ₪" },
+            ],
+          },
           { sender: "customer", text: "في توصيل لمنطقة البيرة؟", typingMs: 1200 },
           { sender: "zamili", text: "أيوا، التوصيل متوفر لمنطقة البيرة خلال ٤٥ دقيقة تقريباً.", typingMs: 1600 },
         ],
@@ -230,6 +284,16 @@ export const ar: Dictionary = {
             imageAlt: "قمصان معلقة بألوان مختلفة",
           },
           { sender: "zamili", text: "أيوا، عنا نفس الستايل بألوان متعددة. حابب أي لون ومقاس؟", typingMs: 1700 },
+          { sender: "customer", text: "شو الألوان المتوفرة؟", typingMs: 1000 },
+          {
+            sender: "zamili",
+            text: "هاي أشهر ألوانه عنا حالياً، وكلها متوفرة بكل المقاسات.",
+            typingMs: 1600,
+            images: [
+              { src: "/images/shirts-rack.jpg", alt: "قمصان بألوان متعددة على شماعات" },
+              { src: "/images/shirts-folded.jpg", alt: "قمصان مطوية بألوان متعددة" },
+            ],
+          },
         ],
       },
       {
@@ -285,6 +349,8 @@ export const ar: Dictionary = {
   trust: {
     eyebrow: "الثقة قبل كل شيء",
     heading: "ليش المؤسسات بتوثق بـ Zamili",
+    growthIntro:
+      "بدك تطوّر مطعمك، عيادتك، أو مؤسستك وتسرّع شغلك لأعلى مستوى؟ Zamili مش أداة توفير وقت بس — هو استثمار بيخلي خدمتك أسرع، أدق، ومتاحة كل ساعة.",
     items: [
       {
         title: "يجيب من معلوماتك فقط",
@@ -327,7 +393,7 @@ export const ar: Dictionary = {
     privacyNote: "بياناتك بتستخدم بس للتواصل معك بخصوص العرض التجريبي.",
   },
   footer: {
-    tagline: "Zamili — الرد على زباينك وتسجيل طلباتهم، بالعربي الحقيقي.",
+    tagline: "Zamili — الرد على زباينك وتسجيل طلباتهم، بالعربي.",
     rightsLine: "© ٢٠٢٦ Zamili. جميع الحقوق محفوظة.",
   },
 };
