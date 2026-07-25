@@ -30,7 +30,7 @@ export function Hero() {
             <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-teal-500" />
             {h.eyebrow}
           </p>
-          <h1 className="balance text-4xl font-bold leading-[1.15] text-white sm:text-5xl lg:text-[3.4rem]">
+          <h1 className="balance text-4xl font-bold leading-[1.45] text-white sm:text-5xl sm:leading-[1.4] lg:text-[3.4rem] lg:leading-[1.35]">
             {renderWithZamiliName(h.headline)}
           </h1>
           <p className="balance mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">

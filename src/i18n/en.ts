@@ -169,6 +169,11 @@ export const en: Dictionary = {
       channel: "Telegram · voice message",
       title: "Hears a voice message, understands it, and acts",
       sub: "The customer sends voice instead of typing, and Zamili understands it and books the appointment on Telegram.",
+      bullets: [
+        "Customers can just talk — no typing, no forms to fill out",
+        "Zamili understands everyday spoken dialect, not just formal language",
+        "Works the same way on WhatsApp and Telegram — same understanding, any channel",
+      ],
       steps: [
         {
           sender: "customer",
@@ -190,6 +195,11 @@ export const en: Dictionary = {
       channel: "Insights board",
       title: "Your numbers, moment by moment",
       sub: "Orders, fulfillment, and profit — all in front of the owner, without asking anyone.",
+      bullets: [
+        "See your profit and orders as they happen, without asking anyone",
+        "Faster decisions because you're looking at real numbers, live",
+        "A weekly report lands in your inbox automatically — zero manual work",
+      ],
       stats: [
         { label: "Orders today", value: 47 },
         { label: "Fulfilled", value: 39 },
@@ -341,6 +351,7 @@ export const en: Dictionary = {
         ],
       },
     ],
+    detailsLabel: "Details",
     modalChannelsLabel: "Available on",
     modalSampleLabel: "Sample conversation",
     modalCta: "Book a demo for this pack",

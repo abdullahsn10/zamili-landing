@@ -7,40 +7,60 @@ import { Modal } from "@/components/ui/Modal";
 import { TypingChat } from "@/components/demo/TypingChat";
 import type { PackItem } from "@/i18n/types";
 
+const ACCENTS = [
+  { bar: "from-brand-500 to-brand-700", tile: "from-brand-500 to-brand-700", glow: "hover:shadow-[0_16px_40px_-8px_rgba(76,59,207,0.35)]" },
+  { bar: "from-ember-500 to-ember-600", tile: "from-ember-400 to-ember-600", glow: "hover:shadow-[0_16px_40px_-8px_rgba(255,138,76,0.4)]" },
+  { bar: "from-[#22C7B6] to-[#158F83]", tile: "from-[#22C7B6] to-[#158F83]", glow: "hover:shadow-[0_16px_40px_-8px_rgba(31,181,166,0.35)]" },
+];
+
 function PackCard({
   pack,
   index,
+  detailsLabel,
   onOpen,
 }: {
   pack: PackItem;
   index: number;
+  detailsLabel: string;
   onOpen: () => void;
 }) {
   const { ref, revealed } = useRevealOnce<HTMLButtonElement>(0.15);
+  const accent = ACCENTS[index % ACCENTS.length]!;
 
   return (
     <button
       ref={ref}
       onClick={onOpen}
-      className={`focus-ring group flex flex-col rounded-2xl border border-line bg-white p-6 text-start shadow-card transition-all duration-700 hover:-translate-y-1 hover:border-brand-300 hover:shadow-glow ${
+      className={`focus-ring group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white text-start shadow-card transition-all duration-700 hover:-translate-y-1.5 ${accent.glow} ${
         revealed ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       }`}
       style={{ transitionDelay: `${(index % 3) * 90}ms` }}
     >
-      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-xl">
-        {pack.icon}
-      </div>
-      <h3 className="mb-2 text-base font-semibold text-ink">{pack.name}</h3>
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-ink-3">{pack.outcome}</p>
-      <div className="flex flex-wrap gap-1.5">
-        {pack.channels.map((c) => (
-          <span
-            key={c}
-            className="rounded-full bg-paper-2 px-2.5 py-1 text-[11px] font-medium text-ink-2"
-          >
-            {c}
+      <span className={`h-1 w-full shrink-0 bg-gradient-to-r ${accent.bar}`} aria-hidden="true" />
+      <div className="flex flex-1 flex-col p-6">
+        <div
+          className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-xl shadow-sm ${accent.tile}`}
+        >
+          {pack.icon}
+        </div>
+        <h3 className="mb-2 text-base font-semibold text-ink">{pack.name}</h3>
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-ink-3">{pack.outcome}</p>
+        <div className="mb-4 flex flex-wrap gap-1.5">
+          {pack.channels.map((c) => (
+            <span
+              key={c}
+              className="rounded-full bg-paper-2 px-2.5 py-1 text-[11px] font-medium text-ink-2"
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 transition-[gap] group-hover:gap-2">
+          {detailsLabel}
+          <span aria-hidden="true" className="rtl:rotate-180">
+            →
           </span>
-        ))}
+        </span>
       </div>
     </button>
   );
@@ -65,7 +85,13 @@ export function SolutionPacks() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {p.items.map((pack, i) => (
-            <PackCard key={pack.id} pack={pack} index={i} onOpen={() => setOpenId(pack.id)} />
+            <PackCard
+              key={pack.id}
+              pack={pack}
+              index={i}
+              detailsLabel={p.detailsLabel}
+              onOpen={() => setOpenId(pack.id)}
+            />
           ))}
         </div>
       </div>

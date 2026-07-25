@@ -75,7 +75,7 @@ Measured locally against `next start` (no CDN/edge caching) on a loaded dev mach
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
 | Desktop | 98–100 across repeated local runs | 100 | 100 | 100 |
-| Mobile | 59–88 across repeated local runs (see caveat below) | 100 | 100 | 100 |
+| Mobile | 56–88 across repeated local runs (see caveat below) | 100 | 100 | 100 |
 
 Full machine-readable output: `lighthouse-report.json` (regenerate with `npm run lighthouse`).
 

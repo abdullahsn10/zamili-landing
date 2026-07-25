@@ -20,6 +20,8 @@ export interface DemoCard {
   channel: string;
   title: string;
   sub: string;
+  /** short benefit bullets shown when this demo gets its own full "marketing" slide */
+  bullets?: string[];
 }
 
 export interface WhatsAppDemo extends DemoCard {
@@ -134,6 +136,7 @@ export interface Dictionary {
     heading: string;
     sub: string;
     items: PackItem[];
+    detailsLabel: string;
     modalChannelsLabel: string;
     modalSampleLabel: string;
     modalCta: string;

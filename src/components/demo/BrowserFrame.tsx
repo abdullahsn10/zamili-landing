@@ -6,7 +6,7 @@ export function BrowserFrame({
   url?: string;
 }) {
   return (
-    <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border border-line/60 bg-white shadow-glow">
+    <div className="mx-auto w-[380px] max-w-full overflow-hidden rounded-2xl border border-line/60 bg-white shadow-glow">
       <div className="flex items-center gap-2 border-b border-line/70 bg-paper-2 px-4 py-2.5">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[#FF6157]" />

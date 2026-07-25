@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang={defaultLocale}
       dir={dirFor(defaultLocale)}
-      className={`${fontArabic.variable} ${fontLatin.variable}`}
+      className={`snap-y snap-proximity ${fontArabic.variable} ${fontLatin.variable}`}
     >
       <body>
         <LocaleProvider initialLocale={defaultLocale}>{children}</LocaleProvider>
