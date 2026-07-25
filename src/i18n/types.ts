@@ -5,6 +5,9 @@ export interface ChatMessage {
   text: string;
   /** ms to show a typing indicator before this message appears */
   typingMs: number;
+  /** optional photo attached to the message (path under /public) */
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface DemoCard {
@@ -87,10 +90,13 @@ export interface Dictionary {
     eyebrow: string;
     heading: string;
     sub: string;
+    actionsNote: string;
     whatsapp: WhatsAppDemo;
     widget: WidgetDemo;
     records: RecordsDemo;
     order: OrderDemo;
+    appointment: OrderDemo;
+    course: OrderDemo;
   };
   verticals: {
     eyebrow: string;

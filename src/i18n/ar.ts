@@ -8,7 +8,7 @@ export const ar: Dictionary = {
   },
   nav: {
     logoAlt: "Zamili",
-    demo: "شوف Zamili يشتغل",
+    demo: "شوف كيف بيشتغل Zamili",
     solutions: "باقات Zamili",
     trust: "ليش تثقوا فينا",
     bookDemo: "احجز عرضاً تجريبياً",
@@ -17,9 +17,9 @@ export const ar: Dictionary = {
   hero: {
     eyebrow: "الرد على الزباين وتسجيل الطلبات، مؤتمت بالكامل",
     headline: "عندك مشكلة بتاكل وقتك كل يوم؟ Zamili بيحلّها بالذكاء الاصطناعي.",
-    sub: "زباينك بيسألوا نفس الأسئلة كل يوم، وبتضيّع وقت موظفينك. Zamili يرد عليهم فوراً على واتساب وموقعك — من معلوماتك الفعلية بس — ويسجل طلباتهم قبل ما تفوتك زبونة.",
+    sub: "زباينك بيسألوا نفس الأسئلة كل يوم، وبتضيّع وقت موظفينك. Zamili يرد عليهم فوراً على واتساب وموقعك — من معلوماتك الفعلية بس — ويسجل طلباتهم قبل ما تفوتك.",
     ctaPrimary: "احجز عرضاً تجريبياً",
-    ctaSecondary: "شاهد Zamili يشتغل",
+    ctaSecondary: "شاهد كيف بيشتغل Zamili",
     statLabel1: "متوفر",
     statValue1: "24/7",
     statLabel2: "قنوات الرد",
@@ -30,7 +30,9 @@ export const ar: Dictionary = {
   demoCanvas: {
     eyebrow: "بالعين، مش بالكلام",
     heading: "هيك بيشتغل Zamili فعلياً",
-    sub: "أربع لقطات حية من نفس المحرك — كل وحدة بتوضح جزء من الصورة: يجاوب، يسجل، ويحول الطلب لعندك.",
+    sub: "ست لقطات حية من نفس المحرك — كل وحدة بتوضح جزء من الصورة: يجاوب، ينفذ، يسجل، ويحول الطلب لعندك.",
+    actionsNote:
+      "Zamili مش بس بيجاوب على الأسئلة — كمان بينفذ الإجراء: يسجل طلب، يحجز موعد، يسجل تسجيل بكورس. وأي إجراء خاص ببزنسك؟ فريق Zamili بيبنيه إلك ضمن باقتك.",
     whatsapp: {
       id: "whatsapp",
       chip: "مطعم",
@@ -44,6 +46,8 @@ export const ar: Dictionary = {
           sender: "zamili",
           text: "أهلين فيك! أيوا متوفرة الليلة، بحجم صغير أو وسط. بتحب حجم شو؟",
           typingMs: 1800,
+          image: "/images/pizza-veggie.jpg",
+          imageAlt: "بيتزا خضار طازة",
         },
         { sender: "customer", text: "وسط، وقديش سعرها؟", typingMs: 1100 },
         {
@@ -119,6 +123,38 @@ export const ar: Dictionary = {
       inboxLine: "كيلو موز، علبتين حليب",
       inboxStatus: "بانتظار التجهيز",
     },
+    appointment: {
+      id: "appointment",
+      chip: "عيادة",
+      channel: "المواعيد",
+      title: "حجز موعد دكتور، أوتوماتيك",
+      sub: "الزبون بيحجز بنفسه، وZamili يسجله بجدولك مباشرة.",
+      steps: [
+        { sender: "customer", text: "بدي أحجز موعد تنظيف أسنان" },
+        { sender: "zamili", text: "تمام، في موعد فاضي بكرا الساعة ٤ العصر. أأكده؟" },
+        { sender: "customer", text: "أكد" },
+      ],
+      toast: "تم حجز الموعد ✅",
+      inboxTitle: "لوحة المواعيد",
+      inboxLine: "تنظيف أسنان — بكرا ٤:٠٠ العصر",
+      inboxStatus: "بانتظار تأكيد العيادة",
+    },
+    course: {
+      id: "course",
+      chip: "جيم",
+      channel: "التسجيل",
+      title: "تسجيل بكورس أو حصة، بضغطة",
+      sub: "Zamili يسجل الزبون وبيحدّث الجدول لحظياً.",
+      steps: [
+        { sender: "customer", text: "بدي أسجل بكورس اليوغا المسائي" },
+        { sender: "zamili", text: "تمام، بسجلك بكورس اليوغا المسائي، بيبدأ الأحد الجاي. أثبت التسجيل؟" },
+        { sender: "customer", text: "أكد" },
+      ],
+      toast: "تم التسجيل بالكورس ✅",
+      inboxTitle: "لوحة التسجيل",
+      inboxLine: "يوغا مسائي — عضو جديد",
+      inboxStatus: "بانتظار الدفعة الأولى",
+    },
   },
   verticals: {
     eyebrow: "لكل قطاع مشكلته",
@@ -186,8 +222,14 @@ export const ar: Dictionary = {
         outcome: "مقاسات وألوان وأسعار محدثة أول بأول.",
         channels: ["واتساب", "تيليجرام", "موقعك", "API"],
         sample: [
-          { sender: "customer", text: "عندكم بنطلون جينز مقاس ٣٢؟", typingMs: 1200 },
-          { sender: "zamili", text: "أيوا متوفر بمقاس ٣٢ بلونين: أزرق وأسود، بسعر ١٢٠ شيكل.", typingMs: 1700 },
+          {
+            sender: "customer",
+            text: "بدور على قميص متل هاد، عندكم؟",
+            typingMs: 1200,
+            image: "/images/shirts-rack.jpg",
+            imageAlt: "قمصان معلقة بألوان مختلفة",
+          },
+          { sender: "zamili", text: "أيوا، عنا نفس الستايل بألوان متعددة. حابب أي لون ومقاس؟", typingMs: 1700 },
         ],
       },
       {
@@ -250,7 +292,7 @@ export const ar: Dictionary = {
       },
       {
         title: "يشتغل على خوادمك إذا لزم",
-        body: "لو بياناتك حساسة أو القانون بيطلب، Zamili بيشتغل بالكامل على خوادمك الخاصة.",
+        body: "لو بياناتك حساسة أو القانون بيطلب، بيشتغل Zamili بالكامل على خوادمك الخاصة.",
       },
       {
         title: "عربي حقيقي مش مترجم",

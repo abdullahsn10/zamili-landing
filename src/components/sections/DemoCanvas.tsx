@@ -52,6 +52,10 @@ export function DemoCanvas() {
           <p className="mt-4 text-base text-white/60">{d.sub}</p>
         </div>
 
+        <div className="mx-auto mb-16 max-w-2xl rounded-2xl border border-ember-500/25 bg-ember-500/[0.06] px-6 py-4 text-center text-sm leading-relaxed text-white/80">
+          {d.actionsNote}
+        </div>
+
         <div className="grid gap-16 lg:grid-cols-2">
           <CardShell
             card={d.whatsapp}
@@ -85,6 +89,24 @@ export function DemoCanvas() {
             render={(inView) => (
               <BrowserFrame url="inbox.zamili.example">
                 <OrderDemo data={d.order} active={inView} />
+              </BrowserFrame>
+            )}
+          />
+
+          <CardShell
+            card={d.appointment}
+            render={(inView) => (
+              <BrowserFrame url="appointments.zamili.example">
+                <OrderDemo data={d.appointment} active={inView} />
+              </BrowserFrame>
+            )}
+          />
+
+          <CardShell
+            card={d.course}
+            render={(inView) => (
+              <BrowserFrame url="enroll.zamili.example">
+                <OrderDemo data={d.course} active={inView} />
               </BrowserFrame>
             )}
           />

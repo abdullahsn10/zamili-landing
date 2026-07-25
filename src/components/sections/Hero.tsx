@@ -59,17 +59,17 @@ export function Hero() {
           </dl>
         </div>
 
-        <div ref={ref} className="relative mx-auto w-full max-w-[320px]">
+        <div ref={ref} className="relative mx-auto w-full max-w-[320px] pt-16">
           <div
-            className="animate-float-slow absolute -right-6 -top-6 hidden w-48 rounded-2xl border border-brand-300/20 bg-white/[0.04] p-4 backdrop-blur-sm sm:block"
-            style={{ ["--tilt" as string]: "-4deg" }}
+            className="animate-float-slow absolute -top-2 start-2 z-20 hidden w-48 rounded-2xl border border-brand-300/20 bg-midnight/80 p-4 shadow-glow backdrop-blur-md sm:block"
+            style={{ ["--tilt" as string]: "4deg" }}
           >
             <p className="text-[10px] uppercase tracking-wide text-white/40">قميص قطن · L</p>
             <p className="mt-1.5 text-lg font-bold text-ember-400">85 ₪</p>
             <p className="mt-1 text-[11px] text-teal-400">متوفر الآن</p>
           </div>
 
-          <div className="animate-float">
+          <div className="relative z-10 animate-float">
             <PhoneFrame headerTitle={t.demoCanvas.whatsapp.contactName} headerSub="عبر Zamili">
               <TypingChat
                 messages={t.demoCanvas.whatsapp.messages}

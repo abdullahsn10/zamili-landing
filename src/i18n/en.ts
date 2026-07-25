@@ -30,7 +30,9 @@ export const en: Dictionary = {
   demoCanvas: {
     eyebrow: "See it, don't just read about it",
     heading: "This is how Zamili actually works",
-    sub: "Four live snapshots of the same engine — each one shows a piece of the picture: it answers, it logs, and it hands the request to you.",
+    sub: "Six live snapshots of the same engine — each one shows a piece of the picture: it answers, it acts, it logs, and it hands the request to you.",
+    actionsNote:
+      "Zamili doesn't just answer questions — it takes the action too: registers an order, books an appointment, completes a course registration. Need something specific to your business? Zamili's team builds custom actions right into your bundle.",
     whatsapp: {
       id: "whatsapp",
       chip: "Restaurant",
@@ -44,6 +46,8 @@ export const en: Dictionary = {
           sender: "zamili",
           text: "Hey! Yes, available tonight in small or medium. Which size would you like?",
           typingMs: 1800,
+          image: "/images/pizza-veggie.jpg",
+          imageAlt: "Fresh veggie pizza",
         },
         { sender: "customer", text: "Medium, how much is it?", typingMs: 1100 },
         {
@@ -119,6 +123,38 @@ export const en: Dictionary = {
       inboxLine: "1kg bananas, 2 milk cartons",
       inboxStatus: "Awaiting fulfillment",
     },
+    appointment: {
+      id: "appointment",
+      chip: "Clinic",
+      channel: "Appointments",
+      title: "Booking a doctor's appointment, automatically",
+      sub: "The patient books it themself, and Zamili logs it straight into your schedule.",
+      steps: [
+        { sender: "customer", text: "I'd like to book a teeth cleaning appointment" },
+        { sender: "zamili", text: "Sure, there's an opening tomorrow at 4pm. Shall I confirm it?" },
+        { sender: "customer", text: "Confirmed" },
+      ],
+      toast: "Appointment booked ✅",
+      inboxTitle: "Appointments board",
+      inboxLine: "Teeth cleaning — tomorrow 4:00pm",
+      inboxStatus: "Awaiting clinic confirmation",
+    },
+    course: {
+      id: "course",
+      chip: "Gym",
+      channel: "Enrollment",
+      title: "Enrolling in a class, in one tap",
+      sub: "Zamili enrolls the member and updates the schedule instantly.",
+      steps: [
+        { sender: "customer", text: "I'd like to sign up for the evening yoga class" },
+        { sender: "zamili", text: "Got it — enrolling you in evening yoga, starting next Sunday. Confirm the enrollment?" },
+        { sender: "customer", text: "Confirmed" },
+      ],
+      toast: "Enrolled in the class ✅",
+      inboxTitle: "Enrollment board",
+      inboxLine: "Evening yoga — new member",
+      inboxStatus: "Awaiting first payment",
+    },
   },
   verticals: {
     eyebrow: "Every sector has its own problem",
@@ -186,8 +222,14 @@ export const en: Dictionary = {
         outcome: "Sizes, colors, and prices updated as they change.",
         channels: ["WhatsApp", "Telegram", "Your site", "API"],
         sample: [
-          { sender: "customer", text: "Do you have jeans in size 32?", typingMs: 1200 },
-          { sender: "zamili", text: "Yes, available in size 32 in two colors: blue and black, for 120 shekels.", typingMs: 1700 },
+          {
+            sender: "customer",
+            text: "I'm looking for a shirt like this, do you have it?",
+            typingMs: 1200,
+            image: "/images/shirts-rack.jpg",
+            imageAlt: "Shirts hanging in different colors",
+          },
+          { sender: "zamili", text: "Yes, we carry that exact style in several colors. Which color and size would you like?", typingMs: 1700 },
         ],
       },
       {

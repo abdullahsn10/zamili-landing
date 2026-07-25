@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import type { ChatMessage } from "@/i18n/types";
 import { useReducedMotion } from "@/lib/hooks";
 
@@ -101,6 +102,19 @@ export function TypingChat({
   );
 }
 
+function MessageImage({ message }: { message: ChatMessage }) {
+  if (!message.image) return null;
+  return (
+    <Image
+      src={message.image}
+      alt={message.imageAlt ?? ""}
+      width={220}
+      height={150}
+      className="mb-1.5 h-[110px] w-full rounded-xl object-cover"
+    />
+  );
+}
+
 function Bubble({ message, isWhatsapp }: { message: ChatMessage; isWhatsapp: boolean }) {
   const fromCustomer = message.sender === "customer";
 
@@ -112,6 +126,7 @@ function Bubble({ message, isWhatsapp }: { message: ChatMessage; isWhatsapp: boo
             fromCustomer ? "rounded-tl-md bg-[#005C4B]" : "rounded-tr-md bg-[#1F2C34]"
           }`}
         >
+          <MessageImage message={message} />
           {message.text}
         </div>
       </div>
@@ -127,6 +142,7 @@ function Bubble({ message, isWhatsapp }: { message: ChatMessage; isWhatsapp: boo
             : "rounded-tr-md border border-line bg-white text-ink"
         }`}
       >
+        <MessageImage message={message} />
         {message.text}
       </div>
     </div>
