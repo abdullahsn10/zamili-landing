@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-07-25T15:27:02.877Z",
+  "url": "http://localhost:3210",
+  "mobile": {
+    "performance": 80,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "desktop": {
+    "performance": 98,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "failedAudits": {
+    "mobile": [],
+    "desktop": []
+  }
+}

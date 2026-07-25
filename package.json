@@ -1,0 +1,38 @@
+{
+  "name": "zamili-landing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Zamili — Arabic-first marketing site and lead capture.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "postbuild": "node scripts/check-no-lead-email-leak.mjs",
+    "lighthouse": "node scripts/run-lighthouse.mjs",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "resend": "4.0.1",
+    "server-only": "0.0.1",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.19",
+    "chrome-launcher": "1.1.2",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.35",
+    "lighthouse": "12.2.1",
+    "playwright": "^1.62.0",
+    "postcss": "8.4.39",
+    "tailwindcss": "3.4.6",
+    "typescript": "5.5.3"
+  }
+}

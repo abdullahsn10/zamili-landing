@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: #fcfbfa;
+  color: #15161b;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), "Segoe UI", Tahoma, sans-serif;
+}
+
+html[dir="ltr"] body {
+  font-family: var(--font-latin), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* "Zamili" always renders in the Latin wordmark font, even inside Arabic copy. */
+.zamili-name {
+  font-family: var(--font-latin), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.balance {
+  text-wrap: balance;
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid #4c3bcf;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #e7e4e0;
+  background-color: #fcfbfa;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: #15161b;
+  transition: border-color 0.15s ease;
+}
+.input::placeholder {
+  color: #6e6f7a;
+}
+.input:focus {
+  outline: none;
+  border-color: #4c3bcf;
+  box-shadow: 0 0 0 3px rgb(76 59 207 / 0.15);
+}
