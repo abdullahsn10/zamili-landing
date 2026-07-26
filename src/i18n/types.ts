@@ -12,6 +12,9 @@ export interface ChatMessage {
   images?: { src: string; alt: string }[];
   /** optional structured menu/catalog list (item + price rows) */
   menu?: { name: string; price: string }[];
+  /** render as a voice-note bubble (waveform + duration) instead of plain text; `text` becomes the transcript shown beneath it */
+  voice?: boolean;
+  voiceDuration?: string;
 }
 
 export interface DemoCard {
@@ -81,7 +84,17 @@ export interface KnowledgeDemo extends DemoCard {
   answer: string;
 }
 
-/** Slide 6 — owner describes a custom need, Zamili assembles an agent pipeline. */
+/** Slide 6 — upload documents in any format; every answer is grounded in them only. */
+export interface DocumentsDemo extends DemoCard {
+  uploadingLabel: string;
+  files: { name: string; format: string }[];
+  readyLabel: string;
+  question: string;
+  answer: string;
+  groundedNote: string;
+}
+
+/** Slide 7 — owner describes a custom need, Zamili assembles an agent pipeline. */
 export interface CustomSolutionDemo extends DemoCard {
   prompt: string;
   buildingLabel: string;
@@ -154,6 +167,7 @@ export interface Dictionary {
     dashboard: DashboardDemo;
     analytics: AnalyticsDemo;
     knowledge: KnowledgeDemo;
+    documents: DocumentsDemo;
     customSolution: CustomSolutionDemo;
   };
   verticals: {

@@ -10,6 +10,7 @@ import { SocialMediaDemo } from "@/components/demo/SocialMediaDemo";
 import { DashboardDemo } from "@/components/demo/DashboardDemo";
 import { AnalyticsDemo } from "@/components/demo/AnalyticsDemo";
 import { KnowledgeDemo } from "@/components/demo/KnowledgeDemo";
+import { DocumentsDemo } from "@/components/demo/DocumentsDemo";
 import { CustomSolutionDemo } from "@/components/demo/CustomSolutionDemo";
 import type { DemoCard } from "@/i18n/types";
 
@@ -129,8 +130,18 @@ export function DemoCanvas() {
         />
 
         <Slide
-          card={d.customSolution}
+          card={d.documents}
           reverse={true}
+          render={(inView) => (
+            <BrowserFrame url="docs.zamili.example">
+              <DocumentsDemo data={d.documents} active={inView} />
+            </BrowserFrame>
+          )}
+        />
+
+        <Slide
+          card={d.customSolution}
+          reverse={false}
           render={(inView) => (
             <BrowserFrame url="builder.zamili.example">
               <CustomSolutionDemo data={d.customSolution} active={inView} />

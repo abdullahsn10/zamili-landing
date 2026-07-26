@@ -166,8 +166,62 @@ function MenuCard({ message, tone }: { message: ChatMessage; tone: "dark" | "lig
   );
 }
 
+const WAVEFORM_BAR_HEIGHTS = [6, 12, 8, 16, 10, 14, 7, 11, 15, 9, 13, 6];
+
+function VoiceNote({ isWhatsapp, fromCustomer }: { isWhatsapp: boolean; fromCustomer: boolean }) {
+  const light = isWhatsapp || fromCustomer;
+  return (
+    <span className="flex items-center gap-2">
+      <span
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+          light ? "bg-white/20" : "bg-brand-50"
+        }`}
+      >
+        <svg width="9" height="11" viewBox="0 0 10 12" fill="none" aria-hidden="true">
+          <path d="M0 0L10 6L0 12V0Z" fill={light ? "white" : "#4C3BCF"} />
+        </svg>
+      </span>
+      <span className="flex items-center gap-[2px]" aria-hidden="true">
+        {WAVEFORM_BAR_HEIGHTS.map((h, i) => (
+          <span
+            key={i}
+            className={`w-[2px] rounded-full ${light ? "bg-white/70" : "bg-brand-300"}`}
+            style={{ height: `${h}px` }}
+          />
+        ))}
+      </span>
+    </span>
+  );
+}
+
 function Bubble({ message, isWhatsapp }: { message: ChatMessage; isWhatsapp: boolean }) {
   const fromCustomer = message.sender === "customer";
+
+  if (message.voice) {
+    return (
+      <div className={`flex animate-fade-up flex-col ${fromCustomer ? "items-end" : "items-start"}`}>
+        <div
+          className={`flex max-w-[80%] items-center gap-2 rounded-2xl px-3.5 py-2.5 shadow-sm ${
+            isWhatsapp
+              ? fromCustomer
+                ? "rounded-tl-md bg-[#005C4B]"
+                : "rounded-tr-md bg-[#1F2C34]"
+              : fromCustomer
+                ? "rounded-tl-md bg-brand-600 text-white"
+                : "rounded-tr-md border border-line bg-white text-ink"
+          }`}
+        >
+          <VoiceNote isWhatsapp={isWhatsapp} fromCustomer={fromCustomer} />
+          <span className={`text-[11px] ${isWhatsapp || fromCustomer ? "text-white/80" : "text-ink-3"}`}>
+            {message.voiceDuration}
+          </span>
+        </div>
+        <p className={`mt-1 max-w-[80%] text-[11px] italic ${isWhatsapp ? "text-white/40" : "text-ink-3"}`}>
+          {message.text}
+        </p>
+      </div>
+    );
+  }
 
   if (isWhatsapp) {
     return (
