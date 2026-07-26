@@ -20,23 +20,60 @@ export interface DemoCard {
   channel: string;
   title: string;
   sub: string;
-  /** short benefit bullets shown when this demo gets its own full "marketing" slide */
-  bullets?: string[];
+  /** benefit bullets shown next to the demo on its full-width scroll slide */
+  bullets: string[];
 }
 
-export interface WhatsAppDemo extends DemoCard {
+/** Slide 1 — combined "asks, browses the menu, orders, confirms" conversation. */
+export interface OrderingDemo extends DemoCard {
   contactName: string;
   messages: ChatMessage[];
 }
 
-export interface WidgetDemo extends DemoCard {
-  messages: ChatMessage[];
+/** Slide 2 — owner asks for a post, Zamili drafts and "publishes" it. */
+export interface SocialMediaDemo extends DemoCard {
+  prompt: string;
+  generatingLabel: string;
+  pageName: string;
+  pageHandle: string;
+  postTimeLabel: string;
+  postText: string;
+  hashtags: string[];
+  likes: number;
+  comments: number;
+  shares: number;
+  publishedLabel: string;
 }
 
-export interface RecordsDemo extends DemoCard {
+/** Slide 3 — live operations board: incoming orders with a status toggle. */
+export interface DashboardOrderRow {
+  code: string;
+  item: string;
+  customer: string;
+}
+
+export interface DashboardDemo extends DemoCard {
+  liveLabel: string;
+  statusLabels: [string, string, string];
+  orders: DashboardOrderRow[];
+}
+
+/** Slide 4 — KPI tiles + chart, then the agent produces a written report. */
+export interface AnalyticsDemo extends DemoCard {
+  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
+  chartLabel: string;
+  reportPrompt: string;
+  reportReply: string;
+}
+
+/** Slide 5 — admin defines a product (with a photo) in the knowledge base. */
+export interface KnowledgeDemo extends DemoCard {
   productName: string;
   categoryLabel: string;
   addingLabel: string;
+  uploadLabel: string;
+  image: string;
+  imageAlt: string;
   variantsLabel: string;
   variants: { size: string; color: string; price: string }[];
   availabilityLabel: string;
@@ -44,23 +81,12 @@ export interface RecordsDemo extends DemoCard {
   answer: string;
 }
 
-export interface OrderDemo extends DemoCard {
-  steps: {
-    sender: "customer" | "zamili";
-    text: string;
-    /** render as a voice-note bubble (waveform + duration) instead of plain text; `text` becomes the shown transcript */
-    voice?: boolean;
-    voiceDuration?: string;
-  }[];
-  toast: string;
-  inboxTitle: string;
-  inboxLine: string;
-  inboxStatus: string;
-}
-
-export interface InsightsDemo extends DemoCard {
-  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
-  chartLabel: string;
+/** Slide 6 — owner describes a custom need, Zamili assembles an agent pipeline. */
+export interface CustomSolutionDemo extends DemoCard {
+  prompt: string;
+  buildingLabel: string;
+  steps: { icon: string; label: string; detail: string }[];
+  resultLabel: string;
 }
 
 export interface VerticalItem {
@@ -70,11 +96,18 @@ export interface VerticalItem {
   solution: string;
 }
 
+export interface PackAgent {
+  icon: string;
+  name: string;
+  role: string;
+}
+
 export interface PackItem {
   id: string;
   icon: string;
   name: string;
   outcome: string;
+  agents: PackAgent[];
   channels: string[];
   sample: ChatMessage[];
 }
@@ -116,14 +149,12 @@ export interface Dictionary {
     heading: string;
     sub: string;
     actionsNote: string;
-    whatsapp: WhatsAppDemo;
-    widget: WidgetDemo;
-    records: RecordsDemo;
-    order: OrderDemo;
-    appointment: OrderDemo;
-    course: OrderDemo;
-    voiceBooking: OrderDemo;
-    insights: InsightsDemo;
+    ordering: OrderingDemo;
+    social: SocialMediaDemo;
+    dashboard: DashboardDemo;
+    analytics: AnalyticsDemo;
+    knowledge: KnowledgeDemo;
+    customSolution: CustomSolutionDemo;
   };
   verticals: {
     eyebrow: string;
@@ -136,6 +167,7 @@ export interface Dictionary {
     heading: string;
     sub: string;
     items: PackItem[];
+    agentsLabel: string;
     detailsLabel: string;
     modalChannelsLabel: string;
     modalSampleLabel: string;

@@ -41,6 +41,43 @@ export function useInView<T extends HTMLElement>(threshold = 0.35) {
 }
 
 /**
+ * Animates a number counting up from 0 to `target` while `active` is true,
+ * resetting to 0 when it goes false. Shared by every demo that shows a KPI
+ * tile (Analytics stats, Social post reaction counts).
+ */
+export function useCountUp(
+  target: number,
+  active: boolean,
+  reducedMotion: boolean,
+  durationMs = 1400,
+  steps = 30
+) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!active) {
+      setValue(0);
+      return;
+    }
+    if (reducedMotion) {
+      setValue(target);
+      return;
+    }
+
+    let step = 0;
+    const id = setInterval(() => {
+      step += 1;
+      setValue(Math.round((target * step) / steps));
+      if (step >= steps) clearInterval(id);
+    }, durationMs / steps);
+
+    return () => clearInterval(id);
+  }, [active, target, reducedMotion, durationMs, steps]);
+
+  return value;
+}
+
+/**
  * Like useInView, but latches `true` the first time the element is seen and
  * never reverts — for one-shot scroll-reveal fade-ups (Verticals, Packs,
  * Trust cards). Toggling visibility back off when the user scrolls past and

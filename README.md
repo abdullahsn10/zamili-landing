@@ -2,6 +2,8 @@
 
 Zamili's Arabic-first public marketing site and demo-request lead capture (ZAM-1102). Next.js (App Router) + TypeScript + Tailwind, static-first. All product demos on the page are staged/mock front-end animations — there is no live backend or real chat widget here (per architecture decision: a live demo ships only once the trust evals are green).
 
+The site positions Zamili as a full AI operations platform, not a single-purpose chatbot. The demo canvas (`src/components/sections/DemoCanvas.tsx`) walks through six distinct capabilities — one per full-height scroll slide, alternating which side the marketing copy sits on — instead of repeating the same "answers + takes an order" example across every vertical: a combined ask→menu→order conversation, a social-media content agent, a live operations dashboard, an analytics/reporting agent, a knowledge-base/catalog editor, and a custom-solution builder. Solution Packs (`src/components/sections/SolutionPacks.tsx`) mirror this: each pack lists a distinct roster of 3 named agents (not the same task repeated per industry), plus a "Custom Solutions" pack tying back to the custom-builder demo. All Arabic copy is written in professional Modern Standard Arabic (no dialect) — see `src/i18n/ar.ts`.
+
 See `IDENTITY.md` for the brand palette/type/motion rationale.
 
 ## Stack
@@ -84,7 +86,7 @@ This repo has not been deployed from this session — no Vercel account/credenti
 
 ## Demo images
 
-`public/images/*.jpg` (used in the WhatsApp order demo and the Retail Pack's sample conversation — one agent-sent photo, one customer-sent photo, and a 2-photo gallery reply — resized/cropped with `sharp`) are all CC0/public-domain photos, sourced via Openverse:
+`public/images/*.jpg` (used in the ordering demo, the knowledge-base demo, and the Retail Pack's sample conversation — chat photos, a product-catalog thumbnail, and a 2-photo gallery reply — resized/cropped with `sharp`) are all CC0/public-domain photos, sourced via Openverse:
 - `pizza-veggie.jpg`: ["Pizza Margherita San Marzano tomatoes"](https://www.rawpixel.com/image/448258/authentic-italian-pizza-pieces) by Jakub Kapusnak, CC0.
 - `shirts-rack.jpg`: ["Blank t-shirts hanging wooden hangers"](https://www.rawpixel.com/image/11524162/blank-t-shirts-hanging-wooden-hangers), CC0.
 - `shirts-folded.jpg`: ["Stack of folded t-shirts"](https://www.rawpixel.com/image/11515802/stack-folded-t-shirts), CC0.
