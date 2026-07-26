@@ -74,7 +74,7 @@ export const en: Dictionary = {
         },
         {
           sender: "zamili",
-          text: "Whether you type it or send it as a voice message, I understand your order just the same. Your order: medium veggie pizza + fresh juice, total $11. Shall I confirm it?",
+          text: "Great choice. Your order: medium veggie pizza + fresh juice, total $11. Shall I confirm it?",
           typingMs: 1900,
           image: "/images/pizza-veggie.jpg",
           imageAlt: "Fresh veggie pizza",
