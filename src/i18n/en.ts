@@ -144,11 +144,15 @@ export const en: Dictionary = {
             text: "A minimum high-school average of 80%, plus passing the college's own entrance exam.",
             typingMs: 1900,
           },
-          { sender: "customer", text: "I'd like to book a campus tour", typingMs: 1300 },
+          {
+            sender: "customer",
+            text: "Is there a link with more details about the program and tuition fees?",
+            typingMs: 1300,
+          },
           {
             sender: "zamili",
-            text: "Your campus tour is booked ✅ next Friday at 11am.",
-            typingMs: 1700,
+            text: "Sure — you'll find full program details and tuition fees at admissions.zamili-university.example/computer-engineering",
+            typingMs: 1900,
           },
         ],
       },
