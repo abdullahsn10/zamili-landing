@@ -13,7 +13,7 @@ export function Hero() {
   const h = t.hero;
   const { ref, inView } = useInView<HTMLDivElement>(0.15);
   const [orderLanded, setOrderLanded] = useState(false);
-  const messageCount = t.demoCanvas.ordering.messages.length;
+  const messageCount = h.chatMessages.length;
 
   const handleProgress = useCallback(
     (visibleCount: number) => setOrderLanded(visibleCount >= messageCount),
@@ -72,9 +72,9 @@ export function Hero() {
 
         <div ref={ref} className="relative mx-auto flex w-full max-w-[320px] flex-col items-center">
           <div className="animate-float">
-            <PhoneFrame headerTitle={t.demoCanvas.ordering.contactName} headerSub="عبر Zamili">
+            <PhoneFrame headerTitle={h.chatContactName} headerSub={t.demoCanvas.viaLabel}>
               <TypingChat
-                messages={t.demoCanvas.ordering.messages}
+                messages={h.chatMessages}
                 variant="whatsapp"
                 active={inView}
                 onProgress={handleProgress}

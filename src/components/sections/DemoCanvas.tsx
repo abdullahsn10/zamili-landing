@@ -3,16 +3,15 @@
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useInView } from "@/lib/hooks";
 import { MeshBackground } from "@/components/background/MeshBackground";
-import { PhoneFrame } from "@/components/demo/PhoneFrame";
 import { BrowserFrame } from "@/components/demo/BrowserFrame";
-import { TypingChat } from "@/components/demo/TypingChat";
+import { MultiChannelDemo } from "@/components/demo/MultiChannelDemo";
 import { SocialMediaDemo } from "@/components/demo/SocialMediaDemo";
 import { DashboardDemo } from "@/components/demo/DashboardDemo";
 import { AnalyticsDemo } from "@/components/demo/AnalyticsDemo";
 import { KnowledgeDemo } from "@/components/demo/KnowledgeDemo";
 import { DocumentsDemo } from "@/components/demo/DocumentsDemo";
 import { CustomSolutionDemo } from "@/components/demo/CustomSolutionDemo";
-import type { DemoCard } from "@/i18n/types";
+import type { DemoCard, MultiChannelDemo as MultiChannelDemoData } from "@/i18n/types";
 
 /** One capability, one full-height scroll slide. `reverse` alternates which
  * side the marketing copy sits on from slide to slide (independent of
@@ -59,6 +58,42 @@ function Slide({
   );
 }
 
+/** Slide 1 is a special case: three channels side by side need the full
+ * width, not half of a two-column grid, so the marketing copy sits centered
+ * on top instead of alongside a single device frame. */
+function ChannelsSlide({ card, data }: { card: DemoCard; data: MultiChannelDemoData }) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.3);
+
+  return (
+    <div
+      ref={ref}
+      className="scroll-mt-24 snap-start flex min-h-[92vh] flex-col items-center justify-center gap-12 py-12"
+    >
+      <div className="mx-auto max-w-2xl text-center">
+        <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
+          <span className="rounded-full bg-brand-500/15 px-3 py-1 text-xs font-medium text-brand-200">
+            {card.chip}
+          </span>
+        </div>
+        <h3 className="balance mb-3 text-2xl font-bold text-white sm:text-3xl">{card.title}</h3>
+        <p className="mb-6 text-base leading-relaxed text-white/60">{card.sub}</p>
+        <ul className="mx-auto flex max-w-xl flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6 sm:gap-y-2">
+          {card.bullets.map((b, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm text-white/75">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ember-500/15 text-[11px] text-ember-400">
+                ✓
+              </span>
+              <span className="leading-relaxed">{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <MultiChannelDemo data={data} active={inView} />
+    </div>
+  );
+}
+
 export function DemoCanvas() {
   const { t } = useLocale();
   const d = t.demoCanvas;
@@ -79,15 +114,7 @@ export function DemoCanvas() {
           {d.actionsNote}
         </div>
 
-        <Slide
-          card={d.ordering}
-          reverse={false}
-          render={(inView) => (
-            <PhoneFrame headerTitle={d.ordering.contactName} headerSub="عبر Zamili">
-              <TypingChat messages={d.ordering.messages} variant="whatsapp" active={inView} />
-            </PhoneFrame>
-          )}
-        />
+        <ChannelsSlide card={d.multichannel} data={d.multichannel} />
 
         <Slide
           card={d.social}

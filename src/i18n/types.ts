@@ -27,10 +27,19 @@ export interface DemoCard {
   bullets: string[];
 }
 
-/** Slide 1 — combined "asks, browses the menu, orders, confirms" conversation. */
-export interface OrderingDemo extends DemoCard {
-  contactName: string;
+/** One channel's mini-conversation within Slide 1's multi-channel showcase. */
+export interface ChannelExample {
+  channelLabel: string;
+  vertical: string;
+  contactName?: string;
   messages: ChatMessage[];
+}
+
+/** Slide 1 — the same engine, three channels, three different institutions. */
+export interface MultiChannelDemo extends DemoCard {
+  whatsapp: ChannelExample;
+  telegram: ChannelExample;
+  webWidget: ChannelExample;
 }
 
 /** Slide 2 — owner asks for a post, Zamili drafts and "publishes" it. */
@@ -156,13 +165,19 @@ export interface Dictionary {
     panelItem: string;
     panelOrderNo: string;
     panelStatus: string;
+    /** the hero's own live WhatsApp demo — deliberately separate content from
+     * the demo canvas's first slide, so the two don't show the same example */
+    chatContactName: string;
+    chatMessages: ChatMessage[];
   };
   demoCanvas: {
+    /** shown under the contact name in the WhatsApp/Telegram device frame headers, e.g. "via Zamili" */
+    viaLabel: string;
     eyebrow: string;
     heading: string;
     sub: string;
     actionsNote: string;
-    ordering: OrderingDemo;
+    multichannel: MultiChannelDemo;
     social: SocialMediaDemo;
     dashboard: DashboardDemo;
     analytics: AnalyticsDemo;
