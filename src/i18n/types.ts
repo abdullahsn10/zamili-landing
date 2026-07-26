@@ -12,6 +12,9 @@ export interface ChatMessage {
   images?: { src: string; alt: string }[];
   /** optional structured menu/catalog list (item + price rows) */
   menu?: { name: string; price: string }[];
+  /** render as a voice-note bubble (waveform + duration) instead of plain text; `text` becomes the transcript shown beneath it */
+  voice?: boolean;
+  voiceDuration?: string;
 }
 
 export interface DemoCard {
@@ -20,23 +23,69 @@ export interface DemoCard {
   channel: string;
   title: string;
   sub: string;
-  /** short benefit bullets shown when this demo gets its own full "marketing" slide */
-  bullets?: string[];
+  /** benefit bullets shown next to the demo on its full-width scroll slide */
+  bullets: string[];
 }
 
-export interface WhatsAppDemo extends DemoCard {
-  contactName: string;
+/** One channel's mini-conversation within Slide 1's multi-channel showcase. */
+export interface ChannelExample {
+  channelLabel: string;
+  vertical: string;
+  contactName?: string;
   messages: ChatMessage[];
 }
 
-export interface WidgetDemo extends DemoCard {
-  messages: ChatMessage[];
+/** Slide 1 — the same engine, three channels, three different institutions. */
+export interface MultiChannelDemo extends DemoCard {
+  whatsapp: ChannelExample;
+  telegram: ChannelExample;
+  webWidget: ChannelExample;
 }
 
-export interface RecordsDemo extends DemoCard {
+/** Slide 2 — owner asks for a post, Zamili drafts and "publishes" it. */
+export interface SocialMediaDemo extends DemoCard {
+  prompt: string;
+  generatingLabel: string;
+  pageName: string;
+  pageHandle: string;
+  postTimeLabel: string;
+  postText: string;
+  hashtags: string[];
+  likes: number;
+  comments: number;
+  shares: number;
+  publishedLabel: string;
+}
+
+/** Slide 3 — live operations board: incoming orders with a status toggle. */
+export interface DashboardOrderRow {
+  code: string;
+  item: string;
+  customer: string;
+}
+
+export interface DashboardDemo extends DemoCard {
+  liveLabel: string;
+  statusLabels: [string, string, string];
+  orders: DashboardOrderRow[];
+}
+
+/** Slide 4 — KPI tiles + chart, then the agent produces a written report. */
+export interface AnalyticsDemo extends DemoCard {
+  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
+  chartLabel: string;
+  reportPrompt: string;
+  reportReply: string;
+}
+
+/** Slide 5 — admin defines a product (with a photo) in the knowledge base. */
+export interface KnowledgeDemo extends DemoCard {
   productName: string;
   categoryLabel: string;
   addingLabel: string;
+  uploadLabel: string;
+  image: string;
+  imageAlt: string;
   variantsLabel: string;
   variants: { size: string; color: string; price: string }[];
   availabilityLabel: string;
@@ -44,23 +93,22 @@ export interface RecordsDemo extends DemoCard {
   answer: string;
 }
 
-export interface OrderDemo extends DemoCard {
-  steps: {
-    sender: "customer" | "zamili";
-    text: string;
-    /** render as a voice-note bubble (waveform + duration) instead of plain text; `text` becomes the shown transcript */
-    voice?: boolean;
-    voiceDuration?: string;
-  }[];
-  toast: string;
-  inboxTitle: string;
-  inboxLine: string;
-  inboxStatus: string;
+/** Slide 6 — upload documents in any format; every answer is grounded in them only. */
+export interface DocumentsDemo extends DemoCard {
+  uploadingLabel: string;
+  files: { name: string; format: string }[];
+  readyLabel: string;
+  question: string;
+  answer: string;
+  groundedNote: string;
 }
 
-export interface InsightsDemo extends DemoCard {
-  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
-  chartLabel: string;
+/** Slide 7 — owner describes a custom need, Zamili assembles an agent pipeline. */
+export interface CustomSolutionDemo extends DemoCard {
+  prompt: string;
+  buildingLabel: string;
+  steps: { icon: string; label: string; detail: string }[];
+  resultLabel: string;
 }
 
 export interface VerticalItem {
@@ -70,11 +118,18 @@ export interface VerticalItem {
   solution: string;
 }
 
+export interface PackAgent {
+  icon: string;
+  name: string;
+  role: string;
+}
+
 export interface PackItem {
   id: string;
   icon: string;
   name: string;
   outcome: string;
+  agents: PackAgent[];
   channels: string[];
   sample: ChatMessage[];
 }
@@ -110,20 +165,25 @@ export interface Dictionary {
     panelItem: string;
     panelOrderNo: string;
     panelStatus: string;
+    /** the hero's own live WhatsApp demo — deliberately separate content from
+     * the demo canvas's first slide, so the two don't show the same example */
+    chatContactName: string;
+    chatMessages: ChatMessage[];
   };
   demoCanvas: {
+    /** shown under the contact name in the WhatsApp/Telegram device frame headers, e.g. "via Zamili" */
+    viaLabel: string;
     eyebrow: string;
     heading: string;
     sub: string;
     actionsNote: string;
-    whatsapp: WhatsAppDemo;
-    widget: WidgetDemo;
-    records: RecordsDemo;
-    order: OrderDemo;
-    appointment: OrderDemo;
-    course: OrderDemo;
-    voiceBooking: OrderDemo;
-    insights: InsightsDemo;
+    multichannel: MultiChannelDemo;
+    social: SocialMediaDemo;
+    dashboard: DashboardDemo;
+    analytics: AnalyticsDemo;
+    knowledge: KnowledgeDemo;
+    documents: DocumentsDemo;
+    customSolution: CustomSolutionDemo;
   };
   verticals: {
     eyebrow: string;
@@ -136,6 +196,7 @@ export interface Dictionary {
     heading: string;
     sub: string;
     items: PackItem[];
+    agentsLabel: string;
     detailsLabel: string;
     modalChannelsLabel: string;
     modalSampleLabel: string;

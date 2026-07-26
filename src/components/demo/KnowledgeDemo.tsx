@@ -1,28 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { RecordsDemo as RecordsDemoData } from "@/i18n/types";
+import Image from "next/image";
+import type { KnowledgeDemo as KnowledgeDemoData } from "@/i18n/types";
 import { useReducedMotion } from "@/lib/hooks";
 
-// A plain timer — the caller re-checks its own `cancelled` closure variable
-// right after every await, so this doesn't need a polling loop to resolve
-// early (see TypingChat.tsx for the fuller rationale).
 function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
 const STEP_MS = 850;
 
-export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: boolean }) {
+export function KnowledgeDemo({ data, active }: { data: KnowledgeDemoData; active: boolean }) {
+  const [showCard, setShowCard] = useState(false);
+  const [uploadDone, setUploadDone] = useState(false);
   const [visibleVariants, setVisibleVariants] = useState(0);
-  const [showProduct, setShowProduct] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!active) {
-      setShowProduct(false);
+      setShowCard(false);
+      setUploadDone(false);
       setVisibleVariants(0);
       setShowQuestion(false);
       setShowAnswer(false);
@@ -30,7 +30,8 @@ export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: b
     }
 
     if (reducedMotion) {
-      setShowProduct(true);
+      setShowCard(true);
+      setUploadDone(true);
       setVisibleVariants(data.variants.length);
       setShowQuestion(true);
       setShowAnswer(true);
@@ -40,14 +41,19 @@ export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: b
     let cancelled = false;
 
     async function run() {
-      setShowProduct(false);
+      setShowCard(false);
+      setUploadDone(false);
       setVisibleVariants(0);
       setShowQuestion(false);
       setShowAnswer(false);
 
-      await sleep(500);
+      await sleep(400);
       if (cancelled) return;
-      setShowProduct(true);
+      setShowCard(true);
+
+      await sleep(1000);
+      if (cancelled) return;
+      setUploadDone(true);
 
       for (let i = 0; i < data.variants.length; i++) {
         await sleep(STEP_MS);
@@ -73,13 +79,14 @@ export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: b
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, data, reducedMotion]);
 
   return (
     <div className="flex h-full flex-col gap-3 p-4">
       <div
         className={`rounded-xl border border-line bg-white p-3.5 shadow-card transition-opacity duration-500 ${
-          showProduct ? "opacity-100" : "opacity-0"
+          showCard ? "opacity-100" : "opacity-0"
         }`}
       >
         <div className="mb-2 flex items-center justify-between">
@@ -90,6 +97,24 @@ export function RecordsDemo({ data, active }: { data: RecordsDemoData; active: b
             {data.categoryLabel}
           </span>
         </div>
+
+        <div className="mb-2.5 h-20 w-full overflow-hidden rounded-lg border border-dashed border-brand-200 bg-brand-50/40">
+          {uploadDone ? (
+            <Image
+              src={data.image}
+              alt={data.imageAlt}
+              width={220}
+              height={120}
+              className="h-20 w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-1 text-brand-400">
+              <span className="text-lg">📷</span>
+              <span className="text-[10px] font-medium">{data.uploadLabel}</span>
+            </div>
+          )}
+        </div>
+
         <div className="mb-2.5 flex items-center justify-between">
           <p className="text-sm font-semibold text-ink">{data.productName}</p>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-teal-500">

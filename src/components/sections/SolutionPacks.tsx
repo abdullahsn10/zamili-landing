@@ -16,11 +16,13 @@ const ACCENTS = [
 function PackCard({
   pack,
   index,
+  agentsLabel,
   detailsLabel,
   onOpen,
 }: {
   pack: PackItem;
   index: number;
+  agentsLabel: string;
   detailsLabel: string;
   onOpen: () => void;
 }) {
@@ -44,7 +46,22 @@ function PackCard({
           {pack.icon}
         </div>
         <h3 className="mb-2 text-base font-semibold text-ink">{pack.name}</h3>
-        <p className="mb-4 flex-1 text-sm leading-relaxed text-ink-3">{pack.outcome}</p>
+        <p className="mb-4 text-sm leading-relaxed text-ink-3">{pack.outcome}</p>
+
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink-3">
+          {agentsLabel}
+        </p>
+        <ul className="mb-4 flex-1 space-y-1.5">
+          {pack.agents.map((a) => (
+            <li key={a.name} className="flex items-center gap-2 text-[13px] text-ink-2">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-paper-2 text-[11px]">
+                {a.icon}
+              </span>
+              <span className="font-medium">{a.name}</span>
+            </li>
+          ))}
+        </ul>
+
         <div className="mb-4 flex flex-wrap gap-1.5">
           {pack.channels.map((c) => (
             <span
@@ -89,6 +106,7 @@ export function SolutionPacks() {
               key={pack.id}
               pack={pack}
               index={i}
+              agentsLabel={p.agentsLabel}
               detailsLabel={p.detailsLabel}
               onOpen={() => setOpenId(pack.id)}
             />
@@ -113,6 +131,23 @@ export function SolutionPacks() {
               </h3>
             </div>
             <p className="mb-5 text-sm leading-relaxed text-ink-2">{activePack.outcome}</p>
+
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-3">
+              {p.agentsLabel}
+            </p>
+            <ul className="mb-6 space-y-2">
+              {activePack.agents.map((a) => (
+                <li key={a.name} className="flex items-start gap-2.5 rounded-xl bg-paper-2 p-2.5">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-sm shadow-sm">
+                    {a.icon}
+                  </span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-ink">{a.name}</p>
+                    <p className="text-[12px] leading-relaxed text-ink-3">{a.role}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
 
             <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-3">
               {p.modalChannelsLabel}

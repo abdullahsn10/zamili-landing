@@ -5,6 +5,8 @@ import Image from "next/image";
 import type { ChatMessage } from "@/i18n/types";
 import { useReducedMotion } from "@/lib/hooks";
 
+export type ChatVariant = "whatsapp" | "telegram" | "widget";
+
 // A plain timer — the caller already re-checks its own `cancelled` closure
 // variable right after every await, so this doesn't need its own polling
 // loop to resolve early. Avoids stacking a 50ms setInterval per animation
@@ -13,6 +15,14 @@ function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
+/** Bubble background per dark-themed chat variant (WhatsApp/Telegram both
+ * render on a dark device frame; "widget" gets its own light-theme styling
+ * further down instead of appearing here). */
+const DARK_BUBBLE_COLORS: Record<"whatsapp" | "telegram", { customer: string; zamili: string }> = {
+  whatsapp: { customer: "bg-[#005C4B]", zamili: "bg-[#1F2C34]" },
+  telegram: { customer: "bg-[#2B5278]", zamili: "bg-[#182533]" },
+};
+
 export function TypingChat({
   messages,
   variant,
@@ -20,7 +30,7 @@ export function TypingChat({
   onProgress,
 }: {
   messages: ChatMessage[];
-  variant: "whatsapp" | "widget";
+  variant: ChatVariant;
   active: boolean;
   /** Called with how many messages are currently visible (0..messages.length) — lets a parent react when the conversation reaches its final message, e.g. to reveal something once the order is "confirmed." */
   onProgress?: (visibleCount: number) => void;
@@ -76,21 +86,22 @@ export function TypingChat({
     };
   }, [active, messages, reducedMotion]);
 
-  const isWhatsapp = variant === "whatsapp";
+  const isDark = variant !== "widget";
+  const darkColors = isDark ? DARK_BUBBLE_COLORS[variant as "whatsapp" | "telegram"] : null;
 
   return (
     <div className="flex h-full flex-col justify-end gap-2">
       {messages.slice(0, visibleCount).map((m, i) => (
-        <Bubble key={i} message={m} isWhatsapp={isWhatsapp} />
+        <Bubble key={i} message={m} variant={variant} />
       ))}
       {typingSender && (
         <div className={`flex ${typingSender === "customer" ? "justify-end" : "justify-start"}`}>
           <div
             className={`flex items-center gap-1 rounded-2xl px-3.5 py-2.5 ${
-              isWhatsapp
+              darkColors
                 ? typingSender === "customer"
-                  ? "bg-[#005C4B]"
-                  : "bg-[#1F2C34]"
+                  ? darkColors.customer
+                  : darkColors.zamili
                 : typingSender === "customer"
                   ? "bg-brand-600"
                   : "bg-paper-2"
@@ -100,7 +111,7 @@ export function TypingChat({
               <span
                 key={d}
                 className={`h-1.5 w-1.5 animate-pulse-dot rounded-full ${
-                  isWhatsapp || typingSender === "customer" ? "bg-white/70" : "bg-ink-3"
+                  isDark || typingSender === "customer" ? "bg-white/70" : "bg-ink-3"
                 }`}
                 style={{ animationDelay: `${d * 0.18}s` }}
               />
@@ -166,15 +177,71 @@ function MenuCard({ message, tone }: { message: ChatMessage; tone: "dark" | "lig
   );
 }
 
-function Bubble({ message, isWhatsapp }: { message: ChatMessage; isWhatsapp: boolean }) {
-  const fromCustomer = message.sender === "customer";
+const WAVEFORM_BAR_HEIGHTS = [6, 12, 8, 16, 10, 14, 7, 11, 15, 9, 13, 6];
 
-  if (isWhatsapp) {
+function VoiceNote({ light }: { light: boolean }) {
+  return (
+    <span className="flex items-center gap-2">
+      <span
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+          light ? "bg-white/20" : "bg-brand-50"
+        }`}
+      >
+        <svg width="9" height="11" viewBox="0 0 10 12" fill="none" aria-hidden="true">
+          <path d="M0 0L10 6L0 12V0Z" fill={light ? "white" : "#4C3BCF"} />
+        </svg>
+      </span>
+      <span className="flex items-center gap-[2px]" aria-hidden="true">
+        {WAVEFORM_BAR_HEIGHTS.map((h, i) => (
+          <span
+            key={i}
+            className={`w-[2px] rounded-full ${light ? "bg-white/70" : "bg-brand-300"}`}
+            style={{ height: `${h}px` }}
+          />
+        ))}
+      </span>
+    </span>
+  );
+}
+
+function Bubble({ message, variant }: { message: ChatMessage; variant: ChatVariant }) {
+  const fromCustomer = message.sender === "customer";
+  const isDark = variant !== "widget";
+  const darkColors = isDark ? DARK_BUBBLE_COLORS[variant as "whatsapp" | "telegram"] : null;
+  const light = isDark || fromCustomer;
+
+  if (message.voice) {
+    return (
+      <div className={`flex animate-fade-up flex-col ${fromCustomer ? "items-end" : "items-start"}`}>
+        <div
+          className={`flex max-w-[80%] items-center gap-2 rounded-2xl px-3.5 py-2.5 shadow-sm ${
+            darkColors
+              ? fromCustomer
+                ? `rounded-tl-md ${darkColors.customer}`
+                : `rounded-tr-md ${darkColors.zamili}`
+              : fromCustomer
+                ? "rounded-tl-md bg-brand-600 text-white"
+                : "rounded-tr-md border border-line bg-white text-ink"
+          }`}
+        >
+          <VoiceNote light={light} />
+          <span className={`text-[11px] ${light ? "text-white/80" : "text-ink-3"}`}>
+            {message.voiceDuration}
+          </span>
+        </div>
+        <p className={`mt-1 max-w-[80%] text-[11px] italic ${isDark ? "text-white/40" : "text-ink-3"}`}>
+          {message.text}
+        </p>
+      </div>
+    );
+  }
+
+  if (darkColors) {
     return (
       <div className={`flex animate-fade-up ${fromCustomer ? "justify-end" : "justify-start"}`}>
         <div
           className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed text-white shadow-sm ${
-            fromCustomer ? "rounded-tl-md bg-[#005C4B]" : "rounded-tr-md bg-[#1F2C34]"
+            fromCustomer ? `rounded-tl-md ${darkColors.customer}` : `rounded-tr-md ${darkColors.zamili}`
           }`}
         >
           <MessageImage message={message} />
